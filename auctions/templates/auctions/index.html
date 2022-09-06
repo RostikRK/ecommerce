@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+    <h2>Active Listings</h2>
+    {% for auction in listings %}
+      <div class="card mb-3">
+          <div class="row g-0">
+              <div class="col-md-4">
+                <img src="{{ auction.image_obj.image.url }}" class="img-fluid rounded-start" style="max-height: 300px;border-radius: 5px;">
+              </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                  <div class="wishlist">
+                    {% if auction not in watchlist.auctions.all %}
+                    <a href="{% url 'auctions:add_to_wishlist' auction_id=auction.id %}" name='mybtn2' class="btn">Add to watchlist <i class="fa fa-heart"></i></a>
+                    {% else %}
+                    <a name='mybtn3' class="btn btn-disable" disabled>In watchlist <i class="fa fa-check"></i></a>
+                    {% endif %}
+                  </div>
+                <h5 class="card-title">{{auction.title}}</h5>
+                {% if auction.amount_of_bids == 0 %}
+                <h6 class="card-text" style="font-weight: bold;">Price: {{auction.current_bid}} &#128176;</h6>
+                {% else %}
+                <h6 class="card-text" style="font-weight: bold;">Price: {{auction.current_bid}} &#128176; <span>(bids {{auction.amount_of_bids}})</span></h6>
+                {% endif %}
+                <p class="card-text">{{auction.description}}</p>
+                <a href="{% url 'auctions:listing' auction_id=auction.id %}" name='mybtn2' class="btn-bid">Make a bid <i class="fa fa-gavel"></i></a>
+                <br>
+                <br>
+                <p class="card-text"><small class="text-muted">Created on: {{auction.date_created}}</small></p>
+              </div>
+            </div>
+          </div>
+      </div>
+    {% endfor %}
+    {% endif %}
+{% endblock %}

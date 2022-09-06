@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+    <h2 style="text-align: center;">Categories</h2>
+    <section class="listing-grid">
+        <div class="container">
+            <img src="{{ auction.image_obj.image.url }}" class="img-fluid rounded-start" style="border-radius: 5px;">
+        </div>
+        <div class="container">
+            <h2>{{auction.title}}</h2>
+            <h1>&#x24; {{auction.current_bid}}</h1>
+            <form action="{% url 'auctions:create' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input class="form-control" type="numeric" name="bid" step=0.01 min="{{auction.current_bid}}" placeholder="Your bid">
+                </div>
+                <input class="btn btn-danger" type="submit" value="Place bid">
+            </form>
+        </div>
+    </section>
+    <div>
+        <h2>Description:</h2>
+        <p class="card-text">{{auction.description}}</p>
+        <h2 style="text-align: center;">Bids History</h2>
+    </div>
+    {% endif %}
+
+{% endblock %}

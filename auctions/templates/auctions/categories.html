@@ -1,0 +1,20 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+    <h2 style="text-align: center;">Categories</h2>
+    <section class="categories-grid">
+        {% for category in categories %}
+        <a href="{% url 'auctions:categorized' category_id=category.id %}">
+            <div class="card bg-dark text-white">
+                <img src="{{ category.category_image.url }}" class="card-img">
+                <div class="card-img-overlay">
+                    <h3 class="card-title">{{category.name}}</h3>
+                </div>
+            </div>
+        </a>
+        {% endfor%}
+    </section>
+    {% endif %}
+
+{% endblock %}
